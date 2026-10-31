@@ -1,7 +1,7 @@
-import { API_BASE, CLASSIC_BASE, ENTER_BASE } from '../config.js';
-
 /**
- * All Pollinations traffic used by Stretch goes through this module:
+ * All Pollinations traffic used by Stretch goes through this module. The URLs
+ * are written out in full at each fetch call so the integration is easy to
+ * find and to audit.
  *
  *   POST https://enter.pollinations.ai/api/device/code    - start the BYOP device flow
  *   POST https://enter.pollinations.ai/api/device/token   - poll for the reader's sk_... key
@@ -9,8 +9,6 @@ import { API_BASE, CLASSIC_BASE, ENTER_BASE } from '../config.js';
  *   POST https://gen.pollinations.ai/v1/chat/completions  - one stretch, paid by that key
  *   GET  https://gen.pollinations.ai/models               - model picker
  *   POST https://text.pollinations.ai/openai              - free fallback, only if the reader opts in
- *
- * The base hosts live in ../config.js next to the publishable App Key (pk_).
  */
 
 export class PollinationsError extends Error {
@@ -96,7 +94,9 @@ export async function generate({
   timeoutMs = 60000,
 }) {
   const useAnonymous = !token && anonymous;
-  const url = useAnonymous ? `${CLASSIC_BASE}/openai` : `${API_BASE}/v1/chat/completions`;
+  const url = useAnonymous
+    ? 'https://text.pollinations.ai/openai'
+    : 'https://gen.pollinations.ai/v1/chat/completions';
 
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers.Authorization = `Bearer ${token}`;
@@ -161,7 +161,7 @@ export async function deviceStart(clientId) {
 
   let response;
   try {
-    response = await fetch(`${ENTER_BASE}/api/device/code`, {
+    response = await fetch('https://enter.pollinations.ai/api/device/code', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -181,7 +181,7 @@ export async function deviceStart(clientId) {
 export async function devicePoll(deviceCode) {
   let response;
   try {
-    response = await fetch(`${ENTER_BASE}/api/device/token`, {
+    response = await fetch('https://enter.pollinations.ai/api/device/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ device_code: deviceCode }),
@@ -219,7 +219,7 @@ export async function devicePoll(deviceCode) {
 
 export async function getUserinfo(token) {
   try {
-    const response = await fetch(`${ENTER_BASE}/api/device/userinfo`, {
+    const response = await fetch('https://enter.pollinations.ai/api/device/userinfo', {
       headers: { Authorization: `Bearer ${token}` },
       signal: AbortSignal.timeout(15000),
     });
@@ -234,7 +234,7 @@ export async function getUserinfo(token) {
 export async function listModels() {
   let response;
   try {
-    response = await fetch(`${API_BASE}/models`, {
+    response = await fetch('https://gen.pollinations.ai/models', {
       signal: AbortSignal.timeout(30000),
     });
   } catch {

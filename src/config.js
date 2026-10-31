@@ -8,10 +8,6 @@ export const APP_KEY = 'pk_STyG6Kv20IivBVEg';
 
 export const DEFAULT_MODEL = 'openai/gpt-5.4-nano';
 
-export const API_BASE = 'https://gen.pollinations.ai';
-export const ENTER_BASE = 'https://enter.pollinations.ai';
-export const CLASSIC_BASE = 'https://text.pollinations.ai';
-
 /** Deepest stretch level; keeps readers from drilling forever. */
 export const MAX_LEVEL = 3;
 /** Cache entries kept in chrome.storage.local (~250 tiny strings). */

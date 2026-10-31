@@ -73,7 +73,7 @@ fraction of a Pollen; cached repeats of the same sentence cost nothing.
 | File | What it does |
 | --- | --- |
 | [`src/lib/pollinations.js`](src/lib/pollinations.js) | Device flow (`POST /api/device/code`, `POST /api/device/token`, `/api/device/userinfo`), `POST https://gen.pollinations.ai/v1/chat/completions`, model list, status → readable-error mapping |
-| [`src/config.js`](src/config.js) | App Key (`pk_…`), API hosts (`gen.pollinations.ai`, `enter.pollinations.ai`, `text.pollinations.ai`), model and budget defaults |
+| [`src/config.js`](src/config.js) | App Key (`pk_…`), default model (`openai/gpt-5.4-nano`), depth and cache limits |
 | [`src/background.js`](src/background.js) | MV3 service worker: message router, auth state, per-host opt-in, expansion cache, badge |
 | [`src/auth.js`](src/auth.js) | Connect window: device code, countdown, approval link |
 
@@ -81,7 +81,10 @@ Every stretch is one chat completion, sent from the service worker with the read
 key:
 
 ```js
-const url = useAnonymous ? `${CLASSIC_BASE}/openai` : `${API_BASE}/v1/chat/completions`;
+// src/lib/pollinations.js
+const url = useAnonymous
+  ? 'https://text.pollinations.ai/openai'
+  : 'https://gen.pollinations.ai/v1/chat/completions';
 ```
 
 The provider's answer is checked before it reaches the page: an HTTP 200 body that is really an
