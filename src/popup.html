@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Stretch</title>
+    <link rel="stylesheet" href="ui.css" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body class="popup">
+    <header class="brand">
+      <img src="../assets/icon-32.png" alt="" width="26" height="26" />
+      <div class="brand-text">
+        <strong>Stretch</strong>
+        <span id="host" class="muted">This page</span>
+      </div>
+      <span id="status" class="pill">…</span>
+    </header>
+
+    <main class="stack">
+      <button id="toggle" class="btn btn-primary btn-block" type="button" aria-pressed="false">
+        Turn on for this site
+      </button>
+
+      <p id="hint" class="hint muted">
+        Click a sentence to grow it. Shift-click a paragraph to shrink it. Esc shrinks the last
+        stretch.
+      </p>
+
+      <section class="card tight">
+        <div class="row">
+          <span class="muted">Pollen</span>
+          <span id="auth-line">Not connected</span>
+        </div>
+        <button id="auth-btn" class="btn btn-block" type="button">Connect Pollinations</button>
+        <p class="hint muted">
+          You sign in with GitHub and approve a budget. The key stays in this browser; only it can
+          spend your Pollen.
+        </p>
+      </section>
+
+      <section class="grid2">
+        <label class="field">
+          <span class="label">Detail</span>
+          <select id="detail">
+            <option value="cozy">Cozy</option>
+            <option value="normal">Normal</option>
+            <option value="nerdy">Nerdy</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label">Model</span>
+          <select id="model"></select>
+        </label>
+      </section>
+
+      <div class="row">
+        <span id="page-stats" class="muted hint">No stretches on this page yet.</span>
+        <button id="shrink" class="link" type="button" hidden>Shrink page</button>
+      </div>
+    </main>
+
+    <footer class="row">
+      <button id="options" class="link" type="button">Settings</button>
+      <span class="muted hint">Alt+Shift+S</span>
+    </footer>
+
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>

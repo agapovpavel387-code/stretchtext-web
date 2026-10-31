@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Stretch — connect Pollinations</title>
+    <link rel="stylesheet" href="ui.css" />
+    <link rel="stylesheet" href="auth.css" />
+  </head>
+  <body class="auth">
+    <main class="wrap">
+      <header class="auth-head">
+        <img src="../assets/icon-48.png" alt="" width="40" height="40" />
+        <div>
+          <h1>Connect Pollinations</h1>
+          <p class="muted hint">Readers pay with their own Pollen. No subscription, no server.</p>
+        </div>
+      </header>
+
+      <section id="connected" class="card" hidden>
+        <div class="row">
+          <span class="pill is-ok">Connected</span>
+          <span id="connected-who" class="muted"></span>
+        </div>
+        <p id="connected-expiry" class="hint muted"></p>
+        <div class="row">
+          <button id="close" class="btn btn-primary" type="button">Done</button>
+          <button id="revoke" class="btn" type="button">Disconnect</button>
+        </div>
+      </section>
+
+      <section id="start" class="card">
+        <p>
+          Stretch asks Pollinations for a key that can spend a small budget of <em>your</em> Pollen.
+          You approve it in this browser; the key stays here.
+        </p>
+        <button id="begin" class="btn btn-primary btn-block" type="button">
+          Continue with Pollinations
+        </button>
+      </section>
+
+      <section id="waiting" class="card" hidden>
+        <p class="muted">Enter this code on the approval page:</p>
+        <div class="code" id="code">••••-••••</div>
+        <button id="approve" class="btn btn-block" type="button">Open approval page</button>
+        <div class="row">
+          <span id="wait-state" class="hint muted">Waiting for approval…</span>
+          <span id="countdown" class="pill"></span>
+        </div>
+        <button id="cancel" class="link" type="button">Cancel</button>
+      </section>
+
+      <section id="error" class="card error-card" hidden>
+        <p id="error-text" class="warn-text"></p>
+        <button id="retry" class="btn" type="button">Try again</button>
+      </section>
+
+      <details class="manual">
+        <summary class="link">I already have a key</summary>
+        <div class="stack">
+          <label class="field">
+            <span class="label">Secret key (sk_…)</span>
+            <input id="manual-key" type="password" spellcheck="false" autocomplete="off" />
+          </label>
+          <div class="row">
+            <p class="hint muted">Pasted here only, stored in this browser's extension storage.</p>
+            <button id="manual-save" class="btn" type="button">Use key</button>
+          </div>
+        </div>
+      </details>
+    </main>
+
+    <script src="auth.js" type="module"></script>
+  </body>
+</html>

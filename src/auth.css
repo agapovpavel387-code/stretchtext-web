@@ -1,0 +1,49 @@
+body.auth {
+  padding: 20px;
+}
+
+.auth-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.auth-head img {
+  border-radius: 10px;
+}
+
+.auth-head p {
+  margin-top: 3px;
+}
+
+.error-card {
+  border-color: rgba(226, 112, 84, 0.45);
+  background: rgba(226, 112, 84, 0.08);
+}
+
+.error-card p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.manual {
+  display: grid;
+  gap: 10px;
+  padding: 4px 2px;
+}
+
+.manual summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 12.5px;
+  list-style: none;
+}
+
+.manual summary::-webkit-details-marker {
+  display: none;
+}
+
+.code {
+  user-select: all;
+}

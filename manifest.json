@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Stretch — stretchtext for any page",
+  "version": "0.1.0",
+  "description": "Click any sentence to grow it with AI, click − to shrink it back. Stretchtext for every page, paid with your own Pollen.",
+  "permissions": ["storage", "scripting", "tabs"],
+  "host_permissions": [
+    "https://gen.pollinations.ai/*",
+    "https://enter.pollinations.ai/*",
+    "https://text.pollinations.ai/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "minimum_chrome_version": "114",
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Stretch",
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "assets/icon-16.png",
+      "32": "assets/icon-32.png",
+      "48": "assets/icon-48.png",
+      "128": "assets/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icon-16.png",
+    "32": "assets/icon-32.png",
+    "48": "assets/icon-48.png",
+    "128": "assets/icon-128.png"
+  },
+  "options_page": "src/options.html",
+  "commands": {
+    "toggle-stretch": {
+      "suggested_key": {
+        "default": "Alt+Shift+S",
+        "mac": "Alt+Shift+S"
+      },
+      "description": "Turn Stretch on or off for the current page"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["src/content.js"],
+      "css": ["src/content.css"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "stretchtext-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Stretchtext for any web page, paid with your own Pollen.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node tools/build-content.mjs",
+    "icons": "node tools/make-icons.mjs",
+    "test": "node --test",
+    "package": "node tools/package.mjs"
+  }
+}

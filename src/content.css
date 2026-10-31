@@ -1,0 +1,193 @@
+/*
+ * Stretch — visual layer. Everything is namespaced `strx-` and sits in the
+ * page's light DOM, so these rules are defensive: they never set fonts on
+ * inherited text and every control resets itself first.
+ */
+
+::highlight(strx-sentence) {
+  background-color: rgba(232, 176, 75, 0.3);
+  text-decoration: underline;
+  text-decoration-color: rgba(196, 132, 32, 0.85);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+html.strx-on p,
+html.strx-on li,
+html.strx-on blockquote,
+html.strx-on dd,
+html.strx-on figcaption,
+html.strx-on h1,
+html.strx-on h2,
+html.strx-on h3,
+html.strx-on h4 {
+  text-wrap: pretty;
+}
+
+/* --- expanded text ------------------------------------------------------ */
+
+.strx-add {
+  background-color: rgba(232, 176, 75, 0.13);
+  box-shadow: inset 0 -1px 0 rgba(232, 176, 75, 0.55);
+  border-radius: 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-color 160ms ease;
+}
+
+.strx-add[data-level='2'] {
+  background-color: rgba(232, 176, 75, 0.2);
+}
+
+.strx-add[data-level='3'] {
+  background-color: rgba(232, 176, 75, 0.27);
+}
+
+.strx-add.strx-grown {
+  animation: strx-grow 220ms ease-out;
+}
+
+@keyframes strx-grow {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+.strx-add.strx-pending {
+  background-color: transparent;
+  box-shadow: none;
+  color: inherit;
+}
+
+.strx-add.strx-pending::after {
+  content: 'stretching';
+  display: inline-block;
+  margin-left: 0.25em;
+  padding: 0 0.35em;
+  border-radius: 999px;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.72em;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  color: #7a5410;
+  background: rgba(232, 176, 75, 0.28);
+  animation: strx-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes strx-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.strx-orig {
+  text-decoration: underline;
+  text-decoration-color: rgba(120, 120, 120, 0.45);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.strx-orig.strx-hidden {
+  display: none !important;
+}
+
+.strx-summary {
+  font-style: normal;
+}
+
+/* --- controls ---------------------------------------------------------- */
+
+.strx-chip {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15em;
+  height: 1.15em;
+  margin: 0 0.15em 0 0.2em;
+  border-radius: 999px;
+  border: 1px solid rgba(232, 176, 75, 0.75);
+  background: rgba(20, 17, 15, 0.55);
+  color: #f4d79b;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.7em;
+  font-weight: 600;
+  line-height: 1;
+  vertical-align: 0.08em;
+  cursor: pointer;
+  opacity: 0.35;
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease,
+    background-color 140ms ease;
+}
+
+.strx-chip:hover,
+.strx-chip:focus-visible {
+  opacity: 1;
+  transform: scale(1.12);
+  background: rgba(232, 176, 75, 0.9);
+  color: #14110f;
+}
+
+.strx-chip:focus-visible {
+  outline: 2px solid #e8b04b;
+  outline-offset: 1px;
+}
+
+.strx-add:hover + .strx-chip,
+.strx-orig:hover ~ .strx-chip {
+  opacity: 0.85;
+}
+
+/* --- toast ------------------------------------------------------------- */
+
+.strx-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  z-index: 2147483647;
+  max-width: min(420px, calc(100vw - 32px));
+  transform: translate(-50%, 12px);
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: rgba(20, 17, 15, 0.94);
+  border: 1px solid rgba(232, 176, 75, 0.4);
+  color: #f6efe3;
+  font: 13px/1.45 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.strx-toast-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.strx-toast[data-tone='warn'] {
+  border-color: rgba(226, 112, 84, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strx-add,
+  .strx-chip,
+  .strx-toast {
+    transition: none;
+    animation: none;
+  }
+}

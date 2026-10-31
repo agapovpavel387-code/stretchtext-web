@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Stretch — settings</title>
+    <link rel="stylesheet" href="ui.css" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="page-head">
+        <img src="../assets/icon-48.png" alt="" width="40" height="40" />
+        <div>
+          <h1>Stretch</h1>
+          <p class="muted hint">
+            Text that grows where you want more and shrinks back where you don't. Every stretch is
+            paid for with your own Pollen.
+          </p>
+        </div>
+        <span id="version" class="pill"></span>
+      </header>
+
+      <section id="welcome" class="card welcome" hidden>
+        <h2>Three steps to a stretchy web</h2>
+        <ol class="steps">
+          <li>Connect Pollinations below — it costs nothing to connect.</li>
+          <li>Open any article and click the Stretch icon.</li>
+          <li>Click a sentence to grow it. Shift-click a paragraph to shrink it.</li>
+        </ol>
+      </section>
+
+      <section class="card">
+        <header>
+          <h2>Pollen</h2>
+          <span id="auth-pill" class="pill">…</span>
+        </header>
+        <div class="row">
+          <span id="auth-line" class="muted">Checking connection…</span>
+          <div class="row buttons">
+            <button id="connect" class="btn btn-primary" type="button">Connect</button>
+            <button id="disconnect" class="btn" type="button" hidden>Disconnect</button>
+          </div>
+        </div>
+        <p class="hint muted">
+          Sign-in uses the Pollinations device flow: you approve a budget in the browser and get a
+          key scoped to your account. The key never leaves this browser, and you can revoke it any
+          time in the Pollinations dashboard.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Reading</h2>
+        <div class="grid2">
+          <label class="field">
+            <span class="label">Detail</span>
+            <select id="detail">
+              <option value="cozy">Cozy — ~1.5× longer</option>
+              <option value="normal">Normal — ~2× longer</option>
+              <option value="nerdy">Nerdy — ~3× longer</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">Model</span>
+            <select id="model"></select>
+          </label>
+        </div>
+        <label class="field narrow">
+          <span class="label">Stretches per page</span>
+          <input id="limit" type="number" min="1" max="200" step="1" />
+        </label>
+        <p class="hint muted">
+          Cheaper models are usually enough: a stretch is one short paragraph of context and one
+          short answer.
+        </p>
+      </section>
+
+      <section class="card">
+        <header>
+          <h2>Sites where Stretch is on</h2>
+          <span id="sites-count" class="pill">0</span>
+        </header>
+        <ul id="sites" class="list"></ul>
+        <p id="sites-empty" class="hint muted">No sites yet. Turn Stretch on from the toolbar icon.</p>
+      </section>
+
+      <section class="card">
+        <h2>App key</h2>
+        <label class="field">
+          <span class="label">Publishable key (pk_…)</span>
+          <input id="app-key" type="text" spellcheck="false" autocomplete="off" placeholder="pk_…" />
+        </label>
+        <div class="row">
+          <p class="hint muted">
+            Created under Enter → Apps. It only names this app on the consent screen; it can never
+            spend anything.
+          </p>
+          <button id="save-key" class="btn" type="button">Save</button>
+        </div>
+        <hr class="divider" />
+        <label class="check">
+          <input id="anonymous" type="checkbox" />
+          <span>
+            Allow the free anonymous fallback when no key is connected (developer testing only: slow,
+            rate limited, and not paid by you or the reader).
+          </span>
+        </label>
+      </section>
+
+      <section class="card">
+        <header>
+          <h2>Local data</h2>
+          <span id="cache-count" class="pill">—</span>
+        </header>
+        <div class="row">
+          <p class="hint muted">
+            Expansions are cached in this browser so revisiting the same sentence costs nothing.
+          </p>
+          <button id="clear-cache" class="btn" type="button">Clear cache</button>
+        </div>
+        <hr class="divider" />
+        <div class="row">
+          <p class="hint muted">Shortcut to toggle Stretch on the current page.</p>
+          <span class="pill" id="shortcut">Alt+Shift+S</span>
+        </div>
+      </section>
+
+      <footer class="page-foot muted hint">
+        <span>Stretch is MIT licensed and keeps everything on your machine.</span>
+        <span class="row links">
+          <a href="https://enter.pollinations.ai" target="_blank" rel="noreferrer">Pollen</a>
+          <a
+            href="https://github.com/pollinations/pollinations/blob/main/BRING_YOUR_OWN_POLLEN.md"
+            target="_blank"
+            rel="noreferrer"
+            >Bring your own Pollen</a
+          >
+        </span>
+      </footer>
+    </div>
+
+    <script src="options.js" type="module"></script>
+  </body>
+</html>
