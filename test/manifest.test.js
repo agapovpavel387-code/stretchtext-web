@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, stat } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -14,6 +14,17 @@ async function exists(relative) {
   } catch {
     return false;
   }
+}
+
+async function walk(dir) {
+  const entries = await readdir(path.join(ROOT, dir), { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    const relative = path.posix.join(dir, entry.name);
+    if (entry.isDirectory()) files.push(...(await walk(relative)));
+    else files.push(relative);
+  }
+  return files;
 }
 
 test('manifest is a valid MV3 manifest', () => {
@@ -69,7 +80,17 @@ test('icons are real PNGs with the declared sizes', async () => {
 });
 
 test('no secret keys are committed', async () => {
+  const files = ['manifest.json', 'README.md', 'package.json'];
+  for (const dir of ['src', 'tools', 'test']) {
+    for (const file of await walk(dir)) files.push(file);
+  }
+
+  const secret = /\bsk_[A-Za-z0-9]{12,}/;
+  for (const file of files) {
+    const text = await readFile(path.join(ROOT, file), 'utf8');
+    assert.doesNotMatch(text, secret, `${file} contains a Pollen secret key`);
+  }
+
   const config = await readFile(path.join(ROOT, 'src/config.js'), 'utf8');
-  assert.doesNotMatch(config, /\bsk_[A-Za-z0-9]{8,}/, 'a secret key is committed in config.js');
   assert.match(config, /pk_/, 'app key placeholder should be documented');
 });
