@@ -229,7 +229,7 @@ function errorMessage(error) {
     case 'auth_required':
       return 'Connect Pollinations in the Stretch popup to grow text.';
     case 'no_pollen':
-      return 'This key is out of Pollen. Top up at enter.pollinations.ai.';
+      return 'Out of Pollen for this key. Top up or finish a quest at enter.pollinations.ai.';
     case 'rate_limited':
       return 'Pollinations is rate limiting. Try again in a moment.';
     case 'timeout':
