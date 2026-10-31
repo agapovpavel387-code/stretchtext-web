@@ -34,9 +34,9 @@ Stretch is a Manifest V3 extension for Chrome, Edge, Brave, Arc and other Chromi
 
 ### From source
 
+Download or clone this repository, then load its folder:
+
 ```bash
-git clone <this repo>
-cd stretchtext-web
 npm test          # optional: 28 checks, no dependencies
 ```
 
