@@ -67,6 +67,20 @@ test('a JSON error body with 200 is rejected', async () => {
 test('provider error detection is strict enough for prose', () => {
   assert.equal(looksLikeProviderError('This key is out of credits.'), true);
   assert.equal(looksLikeProviderError('see enter.pollinations.ai/quests'), true);
+  assert.equal(
+    looksLikeProviderError('The API key used for this request has reached its budget. Please raise the key budget.'),
+    true,
+  );
   assert.equal(looksLikeProviderError('The librarian kept a ledger of every loan.'), false);
+  assert.equal(looksLikeProviderError('The city budget grew slowly that year.'), false);
   assert.equal(looksLikeProviderError(''), false);
+});
+
+test('a key-budget notice returned with 200 is rejected as an out-of-Pollen error', async () => {
+  mockFetch(
+    completion(
+      'The API key used for this request has reached its budget. Please [raise the key budget](https://enter.pollinations.ai/edit-key?id=abc), then try again.',
+    ),
+  );
+  await assert.rejects(generate(request), (error) => error.code === 'no_pollen');
 });

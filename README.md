@@ -91,6 +91,9 @@ The provider's answer is checked before it reaches the page: an HTTP 200 body th
 error ("not enough credits", rate limits) is turned into a short notice instead of being inserted
 into the article. Tests for this live in [`test/pollinations.test.js`](test/pollinations.test.js).
 
+A captured request, response and the browser-side verification steps are in
+[`docs/integration.md`](docs/integration.md).
+
 ## What you get
 
 | Gesture | Result |

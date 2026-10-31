@@ -60,7 +60,7 @@ function friendlyStatus(status, data) {
  * page: it is not an expansion, and inserting it looks like the article grew.
  */
 const PROVIDER_ERROR =
-  /(doesn'?t have enough credits|out of credits|insufficient[_ ](quota|credits)|top[- ]?up|enter\.pollinations\.ai\/(top-up|quests)|rate limit|too many requests)/i;
+  /(doesn'?t have enough credits|out of credits|insufficient[_ ](quota|credits)|top[- ]?up|reached its budget|raise the key budget|api key used for this request|isn'?t your pollinations account|contact whoever runs|enter\.pollinations\.ai\/(top-up|quests|edit-key)|rate limit|too many requests)/i;
 
 export function looksLikeProviderError(text) {
   return PROVIDER_ERROR.test(String(text || ''));
@@ -68,7 +68,7 @@ export function looksLikeProviderError(text) {
 
 function providerError(text) {
   const message = String(text || '').trim();
-  if (/(credit|quota|top[- ]?up)/i.test(message)) {
+  if (/(credit|quota|top[- ]?up|budget|isn'?t your pollinations account)/i.test(message)) {
     return new PollinationsError(
       'no_pollen',
       'Out of Pollen for this key. Top up or finish a quest at enter.pollinations.ai.',
