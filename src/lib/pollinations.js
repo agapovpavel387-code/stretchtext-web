@@ -1,5 +1,18 @@
 import { API_BASE, CLASSIC_BASE, ENTER_BASE } from '../config.js';
 
+/**
+ * All Pollinations traffic used by Stretch goes through this module:
+ *
+ *   POST https://enter.pollinations.ai/api/device/code    - start the BYOP device flow
+ *   POST https://enter.pollinations.ai/api/device/token   - poll for the reader's sk_... key
+ *   GET  https://enter.pollinations.ai/api/device/userinfo- who is connected, remaining budget
+ *   POST https://gen.pollinations.ai/v1/chat/completions  - one stretch, paid by that key
+ *   GET  https://gen.pollinations.ai/models               - model picker
+ *   POST https://text.pollinations.ai/openai              - free fallback, only if the reader opts in
+ *
+ * The base hosts live in ../config.js next to the publishable App Key (pk_).
+ */
+
 export class PollinationsError extends Error {
   constructor(code, message, extra = {}) {
     super(message);

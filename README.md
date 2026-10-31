@@ -1,24 +1,26 @@
-﻿# Stretch вЂ” stretchtext for any web page
+# Stretch — stretchtext for any web page
+
+[![Made with pollinations.ai](https://raw.githubusercontent.com/pollinations/pollinations/main/packages/ui/src/brand/badge-made-with.svg)](https://pollinations.ai/?ref=badge)
 
 In 1967 Ted Nelson described **stretchtext**: text that grows where the reader wants more and
 shrinks back where they don't. Writing every level by hand was too much work, so it never caught
 on. This extension writes those levels on demand, for whatever page you are reading.
 
 Click a sentence and it is replaced by a longer version, with the original underlined and one
-click away. Click again inside the new text and it goes deeper. Click the `в€’` and the page is back
+click away. Click again inside the new text and it goes deeper. Click the `−` and the page is back
 exactly as it was. Shift-click a paragraph to do the opposite: collapse it into one or two
 sentences that keep the meaning.
 
 ![Stretch growing a sentence on a news article](docs/stretch.png)
 
-Every stretch is paid for with **your own Pollen** вЂ” no subscription, and the developer pays
+Every stretch is paid for with **your own Pollen** — no subscription, and the developer pays
 nothing. The key lives in your browser.
 
 ```
-click a sentence  в†’  3вЂ“4 lines of detail, in place
-click "в€’"         в†’  original sentence, untouched
-shift-click       в†’  the whole paragraph, condensed
-Esc               в†’  shrink the last stretch
+click a sentence  →  3–4 lines of detail, in place
+click "−"         →  original sentence, untouched
+shift-click       →  the whole paragraph, condensed
+Esc               →  shrink the last stretch
 ```
 
 ## Install
@@ -40,10 +42,10 @@ Download or clone this repository, then load its folder:
 npm test          # optional: 33 checks, no dependencies
 ```
 
-Then load the repository folder itself вЂ” `manifest.json` is at the top level and the bundled
+Then load the repository folder itself — `manifest.json` is at the top level and the bundled
 content script is committed, so no build step is required.
 
-Pin the extension to the toolbar, open any article, click the icon в†’ **Turn on for this site**.
+Pin the extension to the toolbar, open any article, click the icon → **Turn on for this site**.
 The setting is remembered per host; `Alt+Shift+S` toggles it from the keyboard.
 
 ## Connect your Pollen
@@ -57,7 +59,7 @@ The first stretch asks you to connect:
 Stretch uses the [Bring Your Own Pollen](https://github.com/pollinations/pollinations/blob/main/BRING_YOUR_OWN_POLLEN.md)
 device flow, which is the recommended path for extensions:
 
-- the browser gets a short-lived key (`sk_вЂ¦`) scoped to your account and the budget you approved;
+- the browser gets a short-lived key (`sk_…`) scoped to your account and the budget you approved;
 - the key is stored in `chrome.storage.local` and is never sent anywhere except
   `gen.pollinations.ai`;
 - keys default to 7 days; you can revoke or shrink them any time at
@@ -66,17 +68,37 @@ device flow, which is the recommended path for extensions:
 A stretch is a few hundred tokens. With the default model (`openai/gpt-5.4-nano`) a click costs a
 fraction of a Pollen; cached repeats of the same sentence cost nothing.
 
+## Where the Pollinations integration lives
+
+| File | What it does |
+| --- | --- |
+| [`src/lib/pollinations.js`](src/lib/pollinations.js) | Device flow (`POST /api/device/code`, `POST /api/device/token`, `/api/device/userinfo`), `POST https://gen.pollinations.ai/v1/chat/completions`, model list, status → readable-error mapping |
+| [`src/config.js`](src/config.js) | App Key (`pk_…`), API hosts (`gen.pollinations.ai`, `enter.pollinations.ai`, `text.pollinations.ai`), model and budget defaults |
+| [`src/background.js`](src/background.js) | MV3 service worker: message router, auth state, per-host opt-in, expansion cache, badge |
+| [`src/auth.js`](src/auth.js) | Connect window: device code, countdown, approval link |
+
+Every stretch is one chat completion, sent from the service worker with the reader's own `sk_…`
+key:
+
+```js
+const url = useAnonymous ? `${CLASSIC_BASE}/openai` : `${API_BASE}/v1/chat/completions`;
+```
+
+The provider's answer is checked before it reaches the page: an HTTP 200 body that is really an
+error ("not enough credits", rate limits) is turned into a short notice instead of being inserted
+into the article. Tests for this live in [`test/pollinations.test.js`](test/pollinations.test.js).
+
 ## What you get
 
 | Gesture | Result |
 | --- | --- |
 | Click a sentence | Grows it in place, keeping the original one click away |
 | Click inside grown text | Second and third level, narrower and more specific |
-| Click `в€’` | Shrinks that stretch back to the original wording |
-| Shift-click a paragraph | Replaces it with a 1вЂ“2 sentence summary (`+` restores the full text) |
+| Click `−` | Shrinks that stretch back to the original wording |
+| Shift-click a paragraph | Replaces it with a 1–2 sentence summary (`+` restores the full text) |
 | `Esc` | Collapses the most recent stretch |
 | `Alt+Shift+S` | Turns Stretch on/off for the current site |
-| Popup в†’ **Shrink page** | Removes every stretch on the page |
+| Popup → **Shrink page** | Removes every stretch on the page |
 
 While reading, the sentence under the cursor is highlighted, so it is always clear what a click
 will touch. The popup has three detail levels (Cozy / Normal / Nerdy), a model picker and a
