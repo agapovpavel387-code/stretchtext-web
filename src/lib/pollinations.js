@@ -44,6 +44,32 @@ function friendlyStatus(status, data) {
 }
 
 /**
+ * Providers sometimes answer 200 OK with an error message as the completion
+ * (no credits, rate limits, gateway notices). Such text must never reach the
+ * page: it is not an expansion, and inserting it looks like the article grew.
+ */
+const PROVIDER_ERROR =
+  /(doesn'?t have enough credits|out of credits|insufficient[_ ](quota|credits)|top[- ]?up|enter\.pollinations\.ai\/(top-up|quests)|rate limit|too many requests)/i;
+
+export function looksLikeProviderError(text) {
+  return PROVIDER_ERROR.test(String(text || ''));
+}
+
+function providerError(text) {
+  const message = String(text || '').trim();
+  if (/(credit|quota|top[- ]?up)/i.test(message)) {
+    return new PollinationsError(
+      'no_pollen',
+      'Out of Pollen for this key. Top up or finish a quest at enter.pollinations.ai.',
+    );
+  }
+  if (/(rate limit|too many requests)/i.test(message)) {
+    return new PollinationsError('rate_limited', 'Pollinations is rate limiting requests. Try again shortly.');
+  }
+  return new PollinationsError('upstream', message.slice(0, 240) || 'Pollinations returned an error message.');
+}
+
+/**
  * One chat completion. `token` is the reader's BYOP key; `anonymous` is the
  * explicit developer/test fallback and never the default.
  */
@@ -101,8 +127,16 @@ export async function generate({
       .join(' ');
   }
 
+  if (data && typeof data.error === 'string' && data.error) {
+    throw providerError(data.error);
+  }
+
   if (!text.trim()) {
     throw new PollinationsError('empty', 'The model returned an empty answer. Try again.');
+  }
+
+  if (looksLikeProviderError(text)) {
+    throw providerError(text);
   }
 
   return { text: text.trim(), usage: data?.usage || null, model: data?.model || body.model };
