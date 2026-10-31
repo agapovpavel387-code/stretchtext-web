@@ -4,7 +4,7 @@
 // https://enter.pollinations.ai/keys -> Apps. It identifies the extension on
 // the BYOP consent screen and attributes usage to its publisher. It is safe to
 // ship: it can only ask the reader for permission, never spend anything.
-export const APP_KEY = 'pk_replace_with_your_app_key';
+export const APP_KEY = 'pk_STyG6Kv20IivBVEg';
 
 export const DEFAULT_MODEL = 'openai/gpt-5.4-nano';
 
