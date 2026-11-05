@@ -3,6 +3,9 @@
 (function () {
 'use strict';
 
+// Pure text utilities shared by the content script (via tools/build-content.mjs)
+// and by the extension's test suite.
+
 // Sentence-final abbreviations that some segmenters split on.
 const ABBREVIATION =
   /(?:\b(?:mr|mrs|ms|dr|prof|sr|jr|st|vs|etc|inc|ltd|co|no|vol|fig|al|approx|dept|est|e\.g|i\.e|cf)\.|\b[a-z]\.)$/i;
